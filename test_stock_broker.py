@@ -2,12 +2,20 @@ import io
 
 from contextlib import redirect_stdout
 from unittest import TestCase
+from unittest.mock import Mock
+
+from stock_broker_application import StockBrokerApplication
 
 from stock_broker import KiwerStockBroker, NemoStockBroker
 from stock_broker_application import StockBrokerApplication
 
 
 class TestStockBroker(TestCase):
+    def test_same_instance(self):
+        mk = Mock()
+        app = StockBrokerApplication(mk)
+        self.assertIs(app.get_broker(), mk)
+
     def test_login(self):
         ID = "D_Team"
         PSWD = "changeme"
@@ -23,3 +31,12 @@ class TestStockBroker(TestCase):
                     app.login(ID, PSWD)
                     captured_stdout = buf.getvalue().strip()
                     self.assertEqual(captured_stdout, login_message)
+
+
+    def test_buy_mk(self):
+        mk = Mock()
+        app = StockBrokerApplication(mk)
+
+        app.purchase('NONAME_CODE', 100, 10)
+        mk.purchase.assert_called_once()
+
