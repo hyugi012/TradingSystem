@@ -18,11 +18,17 @@ class TestStockBroker(TestCase):
         app = StockBrokerApplication(mk)
         self.assertIs(app.get_broker(), mk)
 
-    @patch.object(KiwerAPI, 'current_price', return_value=53000)
-    def test_get_price(self, mock):
+    @patch.object(KiwerStockBroker, 'current_stock_price', return_value=53000)
+    def test_get_price_for_kiwer(self, mock):
         ts = StockBrokerApplication(KiwerStockBroker())
 
         self.assertEqual(ts.get_price(123), 53000)
+
+    @patch.object(NemoStockBroker, 'current_stock_price', return_value=52000)
+    def test_get_price_for_nemo(self, mock):
+        ts = StockBrokerApplication(NemoStockBroker())
+
+        self.assertEqual(ts.get_price(123), 52000)
     
     def test_login(self):
         ID = "D_Team"
