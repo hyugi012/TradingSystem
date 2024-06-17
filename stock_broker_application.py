@@ -30,13 +30,19 @@ class StockBrokerApplication:
                   stock_code: int) -> int:
         return self.__stock_broker.current_stock_price(stock_code)
 
-    def buy_nice_timing(self, stock_code: int, price: int, threshold: int):
+    def buy_nice_timing(self,
+                        stock_code: int,
+                        price: int,
+                        threshold: int) -> None:
         current_price = self.get_price(stock_code)
         if current_price > threshold:
             amount = price // current_price
             self.purchase(stock_code, price=current_price, amount=amount)
 
-    def sell_nice_timing(self, stock_code: int, amount: int, threshold: int):
+    def sell_nice_timing(self,
+                         stock_code: int,
+                         amount: int,
+                         threshold: int) -> None:
         price = self.get_price(stock_code)
         if price < threshold:
             self.sell(stock_code, price, amount)
