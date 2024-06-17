@@ -2,8 +2,10 @@ import io
 
 from contextlib import redirect_stdout
 from unittest import TestCase
-from unittest.mock import Mock
 
+from unittest.mock import Mock, patch
+
+from kiwer_api import KiwerAPI
 from stock_broker_application import StockBrokerApplication
 
 from stock_broker import KiwerStockBroker, NemoStockBroker
@@ -16,6 +18,18 @@ class TestStockBroker(TestCase):
         app = StockBrokerApplication(mk)
         self.assertIs(app.get_broker(), mk)
 
+    @patch.object(KiwerStockBroker, 'current_stock_price', return_value=53000)
+    def test_get_price_for_kiwer(self, mock):
+        ts = StockBrokerApplication(KiwerStockBroker())
+
+        self.assertEqual(ts.get_price(123), 53000)
+
+    @patch.object(NemoStockBroker, 'current_stock_price', return_value=52000)
+    def test_get_price_for_nemo(self, mock):
+        ts = StockBrokerApplication(NemoStockBroker())
+
+        self.assertEqual(ts.get_price(123), 52000)
+    
     def test_login(self):
         ID = "D_Team"
         PSWD = "changeme"
@@ -39,4 +53,3 @@ class TestStockBroker(TestCase):
 
         app.purchase('NONAME_CODE', 100, 10)
         mk.purchase.assert_called_once()
-
