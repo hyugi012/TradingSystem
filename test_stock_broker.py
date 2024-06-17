@@ -7,8 +7,6 @@ from unittest.mock import patch, Mock
 from stock_broker import KiwerStockBroker, NemoStockBroker, StockBrokerInterface
 from stock_broker_application import StockBrokerApplication
 
-NONAME_CODE = 12345
-
 
 class TestStockBroker(TestCase):
     def setUp(self):
@@ -92,17 +90,21 @@ class TestStockBroker(TestCase):
     @patch.object(StockBrokerApplication, 'get_price', return_value=5700)
     @patch.object(StockBrokerApplication, 'purchase')
     def test_buy_nice_timing(self, mock_purchase, mock_get_price):
-        app = StockBrokerApplication(Mock())
-        app.buy_nice_timing(NONAME_CODE, 11200, 5600)
+        stock_code = "TEST"
 
-        mock_get_price.assert_called_once_with(NONAME_CODE)
-        mock_purchase.assert_called_once_with(NONAME_CODE, price=5700, amount=1)
+        app = StockBrokerApplication(Mock())
+        app.buy_nice_timing(stock_code, 11200, 5600)
+
+        mock_get_price.assert_called_once_with(stock_code)
+        mock_purchase.assert_called_once_with(stock_code, price=5700, amount=1)
 
     @patch.object(StockBrokerApplication, 'get_price', return_value=5400)
     @patch.object(StockBrokerApplication, 'sell')
     def test_sell_nice_timing(self, mock_sell, mock_get_price):
-        app = StockBrokerApplication(Mock())
-        app.sell_nice_timing(NONAME_CODE, amount=3, threshold=5500)
+        stock_code = "TEST"
 
-        mock_get_price.assert_called_once_with(NONAME_CODE)
-        mock_sell.assert_called_once_with(NONAME_CODE, 5400, 3)
+        app = StockBrokerApplication(Mock())
+        app.sell_nice_timing(stock_code, amount=3, threshold=5500)
+
+        mock_get_price.assert_called_once_with(stock_code)
+        mock_sell.assert_called_once_with(stock_code, 5400, 3)
