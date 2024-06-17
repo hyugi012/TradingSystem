@@ -12,6 +12,7 @@ from stock_broker_application import StockBrokerApplication
 
 NONAME_CODE = 12345
 
+
 class TestStockBroker(TestCase):
     def test_same_instance(self):
         mk = Mock()
@@ -29,7 +30,7 @@ class TestStockBroker(TestCase):
         ts = StockBrokerApplication(NemoStockBroker())
 
         self.assertEqual(ts.get_price(123), 52000)
-    
+
     def test_login(self):
         ID = "D_Team"
         PSWD = "changeme"
@@ -46,7 +47,6 @@ class TestStockBroker(TestCase):
                     captured_stdout = buf.getvalue().strip()
                     self.assertEqual(captured_stdout, login_message)
 
-
     def test_select_stock_brocker(self):
         test_cases = [(KiwerStockBroker(), NemoStockBroker()),
                       (NemoStockBroker(), KiwerStockBroker()),
@@ -57,7 +57,6 @@ class TestStockBroker(TestCase):
                 app.select_stock_brocker(changed_broker)
                 self.assertEqual(app.get_broker(), changed_broker)
 
-
     def test_buy_mk(self):
         mk = Mock()
         app = StockBrokerApplication(mk)
@@ -65,7 +64,6 @@ class TestStockBroker(TestCase):
         app.purchase(NONAME_CODE, 100, 10)
         mk.purchase.assert_called_once()
 
-        
     @patch.object(StockBrokerApplication, 'get_price', return_value=5700)
     @patch.object(StockBrokerApplication, 'purchase')
     def test_buy_nice_timing(self, mock_purchase, mock_get_price):
@@ -75,7 +73,6 @@ class TestStockBroker(TestCase):
         mock_get_price.assert_called_once_with(NONAME_CODE)
         mock_purchase.assert_called_once_with(NONAME_CODE, price=5700, amount=1)
 
-        
     @patch.object(StockBrokerApplication, 'get_price', return_value=5400)
     @patch.object(StockBrokerApplication, 'sell')
     def test_sell_nice_timing(self, mock_sell, mock_get_price):
@@ -84,4 +81,3 @@ class TestStockBroker(TestCase):
 
         mock_get_price.assert_called_once_with(NONAME_CODE)
         mock_sell.assert_called_once_with(NONAME_CODE, 5400, 3)
-
