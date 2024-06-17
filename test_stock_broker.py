@@ -2,7 +2,7 @@ import io
 
 from contextlib import redirect_stdout
 from unittest import TestCase
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from stock_broker_application import StockBrokerApplication
 
@@ -39,4 +39,44 @@ class TestStockBroker(TestCase):
 
         app.purchase('NONAME_CODE', 100, 10)
         mk.purchase.assert_called_once()
+
+    def test_nemo_same_instance(self):
+        nemo = NemoStockBroker()
+        app = StockBrokerApplication(nemo)
+        self.assertIs(app.get_broker(), nemo)
+    @patch.object(NemoStockBroker, 'purchase')
+    def test_nemo_buy(self, mock_purchase):
+        nemo = NemoStockBroker()
+        app = StockBrokerApplication(nemo)
+
+        app.purchase('NONAME_CODE', 200, 15)
+        mock_purchase.assert_called_once_with('NONAME_CODE', 200, 15)
+
+    def test_nemo_same_instance(self):
+        nemo = NemoStockBroker()
+        app = StockBrokerApplication(nemo)
+        self.assertIs(app.get_broker(), nemo)
+
+    @patch.object(NemoStockBroker, 'purchase')
+    def test_nemo_buy(self, mock_purchase):
+        nemo = NemoStockBroker()
+        app = StockBrokerApplication(nemo)
+
+        app.purchase('NONAME_CODE', 200, 15)
+        mock_purchase.assert_called_once_with('NONAME_CODE', 200, 15)
+
+    def test_kiwer_same_instance(self):
+        kiwer = KiwerStockBroker()
+        app = StockBrokerApplication(kiwer)
+        self.assertIs(app.get_broker(), kiwer)
+
+    @patch.object(KiwerStockBroker, 'purchase')
+    def test_nemo_buy(self, mock_purchase):
+        kiwer = KiwerStockBroker()
+        app = StockBrokerApplication(kiwer)
+
+        app.purchase('NONAME_CODE', 50, 20)
+        mock_purchase.assert_called_once_with('NONAME_CODE', 50, 20)
+
+
 
