@@ -21,5 +21,5 @@ class TestStockBroker(TestCase):
                 app = StockBrokerApplication(stock_broker)
                 with io.StringIO() as buf, redirect_stdout(buf):
                     app.login(ID, PSWD)
-                    captured_stdout = buf.getvalue().replace("\n", "")
+                    captured_stdout = buf.getvalue().strip()
                     self.assertEqual(captured_stdout, login_message)
