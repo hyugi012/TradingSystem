@@ -16,6 +16,10 @@ class StockBrokerApplication:
     def broker(self) -> StockBrokerInterface:
         return self.__stock_broker
 
+    def select_stock_brocker(self,
+                             stock_broker: StockBrokerInterface) -> None:
+        self.__stock_broker = stock_broker
+
     def login(self,
               _id: str,
               pw: str) -> None:
