@@ -9,7 +9,7 @@ from stock_broker_application import StockBrokerApplication
 from stock_broker import KiwerStockBroker, NemoStockBroker
 from stock_broker_application import StockBrokerApplication
 
-
+NONAME_CODE = 100
 class TestStockBroker(TestCase):
     def test_same_instance(self):
         mk = Mock()
@@ -37,20 +37,22 @@ class TestStockBroker(TestCase):
         mk = Mock()
         app = StockBrokerApplication(mk)
 
-        app.purchase('NONAME_CODE', 100, 10)
+
+        app.purchase(NONAME_CODE, 100, 10)
         mk.purchase.assert_called_once()
 
     def test_nemo_same_instance(self):
         nemo = NemoStockBroker()
         app = StockBrokerApplication(nemo)
         self.assertIs(app.get_broker(), nemo)
+
     @patch.object(NemoStockBroker, 'purchase')
     def test_nemo_buy(self, mock_purchase):
         nemo = NemoStockBroker()
         app = StockBrokerApplication(nemo)
 
-        app.purchase('NONAME_CODE', 200, 15)
-        mock_purchase.assert_called_once_with('NONAME_CODE', 200, 15)
+        app.purchase(NONAME_CODE, 200, 15)
+        mock_purchase.assert_called_once_with(NONAME_CODE, 200, 15)
 
     def test_nemo_same_instance(self):
         nemo = NemoStockBroker()
@@ -62,8 +64,8 @@ class TestStockBroker(TestCase):
         nemo = NemoStockBroker()
         app = StockBrokerApplication(nemo)
 
-        app.purchase('NONAME_CODE', 200, 15)
-        mock_purchase.assert_called_once_with('NONAME_CODE', 200, 15)
+        app.purchase(NONAME_CODE, 200, 15)
+        mock_purchase.assert_called_once_with(NONAME_CODE, 200, 15)
 
     def test_kiwer_same_instance(self):
         kiwer = KiwerStockBroker()
@@ -75,8 +77,5 @@ class TestStockBroker(TestCase):
         kiwer = KiwerStockBroker()
         app = StockBrokerApplication(kiwer)
 
-        app.purchase('NONAME_CODE', 50, 20)
-        mock_purchase.assert_called_once_with('NONAME_CODE', 50, 20)
-
-
-
+        app.purchase(NONAME_CODE, 50, 20)
+        mock_purchase.assert_called_once_with(NONAME_CODE, 50, 20)
