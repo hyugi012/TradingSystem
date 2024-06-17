@@ -21,7 +21,7 @@ class StockBrokerApplication:
              stock_code: int,
              price: int,
              amount: int) -> None:
-        self.__stock_broker.sell(stock_code, price, amount)
+        self.__stock_broker.sell(str(stock_code), price, amount)
 
     def get_price(self,
                   stock_code: int) -> int:
