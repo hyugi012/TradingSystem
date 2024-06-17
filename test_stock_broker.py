@@ -40,7 +40,7 @@ class TestStockBroker(TestCase):
             with self.subTest(f"{base_broker.__class__.__name__} change to {changed_broker.__class__.__name__} Test!"):
                 app = StockBrokerApplication(base_broker)
                 app.select_stock_brocker(changed_broker)
-                self.assertIs(app.get_broker(), changed_broker)
+                self.assertEqual(app.get_broker(), changed_broker)
 
     def test_buy_mk(self):
         mk = Mock()
